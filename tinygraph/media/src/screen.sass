@@ -1,0 +1,221 @@
+// This import applies a global reset to any page that imports this stylesheet.
+@import "blueprint/reset"
+
+// To configure blueprint, edit the partials/_base.sass file.
+@import "partials/base"
+
+// Import all the default blueprint modules so that we can access their mixins.
+@import "blueprint"
+
+// Import the non-default scaffolding module.
+@import "blueprint/scaffolding"
+
+// Generate the blueprint framework according to your configuration:
+@include blueprint
+
+@include blueprint-scaffolding
+
+
+// My imports
+@import "compass/css3/text-shadow"
+
+//
+// Defaults
+//
+
+// Text Shadow
+$default-text-shadow-h-offset: 0
+$default-text-shadow-color: #fff
+// Border Radius
+$default-border-radius: 6px
+
+// My variables
+$background-colour: #f2f2f2
+$font-size: 13px
+$font-family: "Lucida Grande"
+
+$title-colour: #aaa
+$faded-text-colour: #bbb
+
+$border-colour: #ddd
+$content-background-colour: white
+
+$global-gutters: 20px
+
+
+//
+// Task Button
+//
+
+
+@import "compass/css3"
+@import "compass/css3/gradient"
+@import "compass/css3/box-shadow"
+@import "compass/css3/border-radius"
+@import "compass/utilities/sprites"
+
+
+// Up colours
+$up-fallback: #e2e2e2
+$up-top-colour: #d2d2d2
+$up-bottom-colour: #f2f2f2
+$up-text-colour: #a2a2a2
+$up-inner-shadow-colour: rgba(0,0,0,0.2)
+
+// Over colours
+$over-text-colour: white
+$over-inner-shadow-colour: rgba(255,255,255,0.35)
+
+$over-top-colour: #5e5e5e
+$over-middle-top-colour: #626262
+$over-middle-bottom-colour: #414141
+$over-bottom-colour: #414141
+
+=task-button-up
+    padding: 10px
+    background-color: $up-fallback
+    +linear-gradient(color-stops($up-top-colour 0%, $up-bottom-colour 100%))
+    font-weight: bold
+    color: $up-text-colour
+    +text-shadow()
+    text-decoration: none
+    +box-shadow(inset $up-inner-shadow-colour, 0, 0, 3px)
+    +border-radius()
+    display: inline-block
+
+=task-button-over
+    color: $over-text-colour
+    +text-shadow(none)
+    +box-shadow(inset $over-inner-shadow-colour, 0, 0, 5px)
+    +linear-gradient(color-stops($over-top-colour 0%, $over-middle-top-colour 49%, $over-middle-bottom-colour 52%, $over-bottom-colour 100%))
+
+=task-button-down
+    +box-shadow(inset black, 0, 0, 10px)
+
+=float-right
+    float: right
+    margin-left: $global-gutters / 2
+
+=float-left
+    float: left
+    margin-right: $global-gutters / 2
+
+*
+//    -moz-user-select: none
+//    -webkit-user-select: none
+
+input
+    -moz-user-select: auto
+    -webkit-user-select: auto
+
+body
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    font-family: $font-family
+    font-size: $font-size
+    background-color: $background-colour
+
+.header
+    float: left
+    position: absolute
+    left: 0
+    right: 0
+    padding: 20px
+
+.header
+    h1
+        float: left
+        color: $title-colour
+        +text-shadow()
+        font-size: 28px
+        text-transform: uppercase
+        font-weight: bold
+    .title-trail
+        float: left
+        font-size: 12px
+        line-height: 40px
+        margin-left: 10px
+        cursor: default
+        color: $faded-text-colour
+
+$gear-sprite: "gear-sprite.png"
+
+$edit-bar-colour: #afa3d4
+$edit-bar-text-colour: #7f73a4 //#614da3
+$edit-bar-text-shadow-colour: #d7d1e9
+
+#canvas-wrapper
+    position: absolute
+    top: 60px
+    left: 20px
+    right: 20px
+    bottom: 80px
+    border: 1px solid $border-colour
+    background-color: $content-background-colour
+    overflow: hidden
+    
+    #canvas
+        position: absolute
+        left: 0
+        top: 0
+        padding: 30px
+        overflow: auto
+        -moz-user-select: auto
+        -webkit-user-select: auto
+        z-index: 1000
+        right: 0
+        bottom: 0
+        display: block
+    
+    #edit-bar
+        background-color: $edit-bar-colour
+        +linear-gradient(color-stops(#cfc3f4 0%, $edit-bar-colour 100%))
+        height: 32px + 2 * 20px
+        z-index: 1200
+        
+        #edit-bar-message
+            +text-shadow($edit-bar-text-shadow-colour)
+            color: $edit-bar-text-colour
+            text-align: center
+            padding-top: 15px
+            font-weight: bold
+            text-transform: uppercase
+    
+    #edit-mode-button
+        +sprite-background($gear-sprite)
+        width: image-width($gear-sprite)
+        height: image-height($gear-sprite) / 2
+        position: absolute
+        top: 20px
+        right: 20px
+        z-index: 1100
+        +sprite-row(2)
+        opacity: 0.5
+        +transition(opacity, 0.1s, ease-out, 0s)
+    #edit-mode-button:hover
+        opacity: 1.0
+        cursor: pointer
+    #edit-mode-button.enabled
+        opacity: 1.0
+
+#task-bar
+    position: fixed
+    bottom: 20px
+    right: 20px
+    left: 20px
+    
+    a, input[type="submit"], button
+        +task-button-up
+        -webkit-appearance: none
+    a.right, input.right, button.right
+        +float-right
+    a.left, input.left, button.left
+        +float-left
+    a:hover, input[type="submit"]:hover, button:hover
+        +task-button-over
+    a:active, input[type="submit"]:active, button:active
+        +task-button-down
+        

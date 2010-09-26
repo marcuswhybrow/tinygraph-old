@@ -1,14 +1,39 @@
-<DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>TinyGraph</title>
+    
+    <link href="{{ MEDIA_URL }}stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <link href="{{ MEDIA_URL }}stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 8]><link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" /><![endif]-->
+    
+    <title>Tiny Graph</title>
 </head>
 <body>
-    <h1>TinyGraph</h1>
-    <hr>
-    {% block content %}
-        
-    {% endblock %}
+    <div class="header">
+        <h1>Tiny Graph</h1><span class="title-trail">v1.0 beta</span>
+    </div>
+    <div id="canvas-wrapper" class="canvas">
+        <div id="edit-bar" style="display:none">
+            <h2 id="edit-bar-message">Edit Mode</h2>
+        </div>
+        <div id="edit-mode-button" title="Toggle edit mode"></div>
+        <div id="canvas">
+            {% block content %}
+                
+            {% endblock %}
+        </div>
+    </div>
+    <div id="task-bar">
+        {% block task_bar_right %}
+            <a href="" class="right" title="Add a new device to the diagram">+ Add New Device</a>
+        {% endblock %}
+        {% block task_bar_left %}
+            <a href="" class="left" title="Add a new device to the diagram">Settings</a>
+        {% endblock %}
+    </div>
 </body>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="{{ MEDIA_URL }}js/canvas.js" type="text/javascript" charset="utf-8"></script>
+
 </html>

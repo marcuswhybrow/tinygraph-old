@@ -12,8 +12,6 @@ def test(request):
         try:
             data = get_details(request.POST['host'], request.POST['community'])
             
-            print data
-            
             for index, store in data['storage'].items():
                 store['sizeInBytes'] = int(store['hrStorageAllocationUnits']) * int(store['hrStorageSize'])
                 store['usedInBytes'] = int(store['hrStorageAllocationUnits']) * int(store['hrStorageUsed'])
@@ -23,7 +21,7 @@ def test(request):
                     store['usage'] = 0.0
         except Exception as e:
             error = e
-        return render_to_response('core/test.html', {
+        return render_to_response('core/test_result.html', {
             'data': data,
             'error': error,
             'host': request.POST['host'],

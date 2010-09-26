@@ -1,3 +1,4 @@
 *.pyc
 pip-log.txt
 dev.db
+media/.sass-cache

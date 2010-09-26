@@ -1,0 +1,235 @@
+{% extends "core/core_base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+    <form action="" method="post" accept-charset="utf-8">
+        {% csrf_token %}
+        <input type="text" name="host" value="{{ host }}" placeholder="Host Name">
+        <input type="text" name="community" value="{% if community %}{{ community }}{% else %}Whybrow{% endif %}" placeholder="Community">
+        <p><input type="submit" value="Analyse &rarr;"></p>
+    </form>
+    
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+    
+    {% if data %}
+        <h1>{{ data.host_name }}</h1>
+        
+        <table border="0" cellspacing="5" cellpadding="5">
+            <tbody>
+                <tr>
+                    <td>Host Name</td>
+                    <td>{{ data.host_name }}</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{ data.system_description }}</td>
+                </tr>
+                <tr>
+                    <td>Up Time</td>
+                    <td>{{ data.up_time|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>Memory</td>
+                    <td>{{ data.memory|filesizeformat }}</td>
+                </tr>
+                <tr>
+                    <td>Number of Interfaces</td>
+                    <td>{{ data.number_of_interfaces }}</td>
+                </tr>
+                <tr>
+                    <td>Number of Logged In Users</td>
+                    <td>{{ data.number_of_users }}</td>
+                </tr>
+                <tr>
+                    <td>Processes Running</td>
+                    <td>{{ data.processes }}</td>
+                </tr>
+                <tr>
+                    <td>Number of Processors</td>
+                    <td>{{ data.processors.items|length}}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Devices</h2>
+        <table border="0" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Device ID</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Errors</th>
+                    <th>ID</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, device in data.devices.items %}
+                    <tr>
+                        <td>{{ index }}</td>
+                        <td>{{ device.hrDeviceType }}</td>
+                        <td>{{ device.hrDeviceDescr }}</td>
+                        <td>{{ device.hrDeviceErrors }}</td>
+                        <td>{{ device.hrDeviceID }}</td>
+                        <td>{{ device.hrDeviceStatus }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <h2>Interfaces</h2>
+        <table border="0" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Interface ID</th>
+                    <th>Description</th>
+                    <th>Physical Address</th>
+                    <th>Speed</th>
+                    <th>Type</th>
+                    <th>MTU</th>
+                    <th>In Uni Pkts</th>
+                    <th>In NUni Pkts</th>
+                    <th>Out Uni Pkts</th>
+                    <th>Out NUni Pkts</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, interface in data.interfaces.items %}
+                    <tr>
+                        <td>{{ index }}</td>
+                        <td>{{ interface.ifDescr }}</td>
+                        <td>{{ interface.ifPhysAddress }}</td>
+                        <td>{{ interface.ifSpeed|intcomma }}</td>
+                        <td>{{ interface.ifType }}</td>
+                        <td>{{ interface.ifMtu|intcomma }}</td>
+                        <td>{{ interface.ifInUcastPkts|intcomma }}</td>
+                        <td>{{ interface.ifInNUcastPkts|intcomma }}</td>
+                        <td>{{ interface.ifOutUcastPkts|intcomma }}</td>
+                        <td>{{ interface.ifOutNUcastPkts|intcomma }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <h2>IP Addresses</h2>
+        <table border="0" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Interface ID</th>
+                    <th>IP Address</th>
+                    <th>Network Mask</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, address in data.ip_addresses.items %}
+                    <tr>
+                        <td>{{ address.ipAdEntIfIndex }}</td>
+                        <td>{{ address.ipAdEntAddr }}</td>
+                        <td>{{ address.ipAdEntNetMask }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <h2>Partitions</h2>
+        <table border="0" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Partition ID</th>
+                    <th>Type</th>
+                    <th>Bootable</th>
+                    <th>Access Level</th>
+                    <th>Mount Point</th>
+                    <th>Remote Mount Point</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, partition in data.partitions.items %}
+                    <tr>
+                        <td>{{ index }}</td>
+                        <td>{{ partition.hrFSType}}</td>
+                        <td>{% if partition.hrFSBootable %}True{% else %}False{% endif %}</td>
+                        <td>{{ partition.hrFSAccess }}</td>
+                        <td>{{ partition.hrFSMountPoint }}</td>
+                        <td>{{ partition.hrFSRemoteMountPoint }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <h2>Storage</h2>
+        <table border="0" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Storage ID</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Allocation Units</th>
+                    <th>Size</th>
+                    <th>Used</th>
+                    <th>Capacity</th>
+                    <th>Used Capacity</th>
+                    <th>Usage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, store in data.storage.items %}
+                    <tr>
+                        <td>{{ index }}</td>
+                        <td>{{ store.hrStorageType }}</td>
+                        <td>{{ store.hrStorageDescr }}</td>
+                        <td>{{ store.hrStorageAllocationUnits }}</td>
+                        <td>{{ store.hrStorageSize|intcomma }}</td>
+                        <td>{{ store.hrStorageUsed|intcomma }}</td>
+                        <td>{{ store.sizeInBytes|filesizeformat }}</td>
+                        <td>{{ store.usedInBytes|filesizeformat }}</td>
+                        <td>{% if store.usage %}{{ store.usage|floatformat }}%{% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <h2>Processors</h2>
+        <table border="0" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Device ID</th>
+                    <th>FirmWare ID</th>
+                    <th>Load</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, processor in data.processors.items %}
+                    <tr>
+                        <td>{{ index }}</td>
+                        <td>{{ processor.hrProcessorFrwID }}</td>
+                        <td>{{ processor.hrProcessorLoad }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <h2>Other Known Devices</h2>
+        <table border="0" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Interface</th>
+                    <th>IP Address</th>
+                    <th>Physical Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, media in data.net_to_media.items %}
+                    <tr>
+                        <td>{{ media.ipNetToMediaIfIndex }}</td>
+                        <td>{{ media.ipNetToMediaNetAddress }}</td>
+                        <td>{{ media.ipNetToMediaPhysAddress }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

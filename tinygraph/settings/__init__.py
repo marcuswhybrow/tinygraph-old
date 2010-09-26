@@ -1,6 +1,6 @@
-from tinygraph.settings import global_settings
+from global_settings import *
 
 try:
-    from tinygraph.settings import local_settings
+    from local_settings import *
 except ImportError:
     pass

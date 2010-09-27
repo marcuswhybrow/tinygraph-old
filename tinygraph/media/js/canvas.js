@@ -41,6 +41,7 @@ $(function() {
         
         var data = $(this).serialize();
         $(this).children().attr('disabled', 'disabled');
+        $canvas.html('<p>loading ...</p>');
         $.ajax({
             url: window.location,
             type: 'POST',
